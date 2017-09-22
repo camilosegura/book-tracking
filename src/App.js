@@ -16,12 +16,28 @@ class BooksApp extends Component {
     })
   }
 
+  onChangeShelf = (book, shelf) => {
+    this.setState((state) => ({
+      books: state.books.map((el) => {
+        if (el.id === book.id) {
+
+          el.shelf = shelf;
+        }
+
+        return el;
+      })
+    }));
+
+    BooksAPI.update(book, shelf);
+  }
+
   render() {
     return (
       <div className="app">
         <Route exact path='/' render={() => (
             <ListBooks
               books={this.state.books}
+              onChangeShelf={this.onChangeShelf}
             />
           )}
         />

@@ -20,6 +20,16 @@ class ListBooks extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event, book) {
+    this.props.onChangeShelf(book, event.target.value)
+  }
+
   clasify() {
     const books = {
       currentlyReading: {
@@ -48,6 +58,7 @@ class ListBooks extends Component {
 
   render() {
     const books = this.clasify();
+    const onChangeShelf = this.props.onChangeShelf;
     console.log(books)
 
     return(
@@ -72,7 +83,9 @@ class ListBooks extends Component {
                           <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer">
-                              <select>
+                              <select
+                                value={book.shelf}
+                                onChange={(e) => onChangeShelf(book, e.target.value)}>
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
