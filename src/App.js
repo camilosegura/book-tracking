@@ -7,7 +7,8 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: [],
+    searchBooks: []
   }
 
   componentDidMount() {
@@ -31,6 +32,14 @@ class BooksApp extends Component {
     BooksAPI.update(book, shelf);
   }
 
+  onSearch = (query) => {
+    BooksAPI.search(query).then((books) => {
+      this.setState({
+        searchBooks: books
+      });
+    })
+  }
+
   render() {
     return (
       <div className="app">
@@ -42,7 +51,11 @@ class BooksApp extends Component {
           )}
         />
         <Route path='/search' render={() => (
-            <SearchBooks />
+            <SearchBooks
+              onSearch={this.onSearch}
+              onChangeShelf={this.onChangeShelf}
+              searchBooks={this.state.searchBooks}
+            />
           )}
         />
       </div>
