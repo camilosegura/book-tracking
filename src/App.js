@@ -32,6 +32,19 @@ class BooksApp extends Component {
     BooksAPI.update(book, shelf);
   }
 
+  onSearchChangeShelf = (book, shelf) => {
+    book.shelf = shelf;
+
+    this.setState((state) => {
+      state.books.push(book);
+      return {
+        books: state.books
+      }
+    });
+
+    BooksAPI.update(book, shelf);
+  }
+
   onSearch = (query) => {
     BooksAPI.search(query).then((books) => {
       this.setState({
@@ -41,6 +54,7 @@ class BooksApp extends Component {
   }
 
   render() {
+
     return (
       <div className="app">
         <Route exact path='/' render={() => (
@@ -53,7 +67,7 @@ class BooksApp extends Component {
         <Route path='/search' render={() => (
             <SearchBooks
               onSearch={this.onSearch}
-              onChangeShelf={this.onChangeShelf}
+              onChangeShelf={this.onSearchChangeShelf}
               searchBooks={this.state.searchBooks}
             />
           )}

@@ -30,7 +30,7 @@ class ListBooks extends Component {
     this.props.onChangeShelf(book, event.target.value)
   }
 
-  clasify() {
+  classify() {
     const books = {
       currentlyReading: {
         title: 'Currently Reading',
@@ -57,7 +57,7 @@ class ListBooks extends Component {
   }
 
   render() {
-    const books = this.clasify();
+    const books = this.classify();
     const onChangeShelf = this.props.onChangeShelf;
 
     return(
