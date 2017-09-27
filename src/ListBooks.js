@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Book from './Book';
 
+/**
+ * List books in bookselfs
+ */
 class ListBooks extends Component {
   state = {
     books: {
@@ -75,7 +78,7 @@ class ListBooks extends Component {
                   <ol className="books-grid">
                     {books[category].list.map((book) => (
                       <Book
-                        key={book.title}
+                        key={book.id}
                         book={book}
                         onChangeShelf={onChangeShelf}
                       />

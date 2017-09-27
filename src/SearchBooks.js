@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Book from './Book';
 
+/**
+ * Search books page
+ */
 class SearchBooks extends Component {
   render() {
     const { searchBooks, onChangeShelf } = this.props;
