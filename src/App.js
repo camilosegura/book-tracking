@@ -13,6 +13,12 @@ class BooksApp extends Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
+      books = books.map((book) => {
+        book.shelf = book.shelf || 'none';
+
+        return book;
+      });
+
       this.setState({ books });
     })
   }
@@ -45,11 +51,28 @@ class BooksApp extends Component {
     BooksAPI.update(book, shelf);
   }
 
+  _searchAssignShelf(books) {
+    return books.map((book) => {
+      this.state.books.forEach((bk) => {
+        if (book.id === bk.id) {
+          book.shelf = bk.shelf;
+        }
+      });
+
+      book.shelf = book.shelf || 'none';
+
+      return book;
+    });
+  }
+
   onSearch = (query) => {
     BooksAPI.search(query).then((books) => {
-      if (books.error) {
+
+      if (books && books.error) {
         console.log(books.error);
         books = [];
+      } else {
+        books = this._searchAssignShelf(books);
       }
 
       this.setState({

@@ -50,7 +50,6 @@ class ListBooks extends Component {
     };
 
     Object.keys(books).forEach((category) => {
-      console.log(category)
       books[category].list = this.props.books.filter((book) => (
         book.shelf === category
       ));
