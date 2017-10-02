@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import ListBooks from './ListBooks';
 import SearchBooks from './SearchBooks';
+import Page404 from './Page404';
 import './App.css'
 
 class BooksApp extends Component {
@@ -24,18 +25,12 @@ class BooksApp extends Component {
   }
 
   onChangeShelf = (book, shelf) => {
-    this.setState((state) => ({
-      books: state.books.map((el) => {
-        if (el.id === book.id) {
-
-          el.shelf = shelf;
-        }
-
-        return el;
-      })
-    }));
-
-    BooksAPI.update(book, shelf);
+    BooksAPI.update(book, shelf).then(() => {
+      book.shelf = shelf
+      this.setState(previousState => ({
+        books: previousState.books.filter(b=> b.id !== book.id).concat([book])
+      }));
+    });
   }
 
   onSearchChangeShelf = (book, shelf) => {
@@ -68,11 +63,16 @@ class BooksApp extends Component {
   onSearch = (query) => {
     BooksAPI.search(query).then((books) => {
 
-      if (books && books.error) {
-        console.log(books.error);
-        books = [];
+      if (books) {
+        if (books.error) {
+          console.log(books.error);
+          books = [];
+        } else {
+          books = this._searchAssignShelf(books);
+        }
+
       } else {
-        books = this._searchAssignShelf(books);
+        books = books = [];
       }
 
       this.setState({
@@ -86,21 +86,24 @@ class BooksApp extends Component {
 
     return (
       <div className="app">
-        <Route exact path='/' render={() => (
-            <ListBooks
-              books={this.state.books}
-              onChangeShelf={this.onChangeShelf}
-            />
-          )}
-        />
-        <Route path='/search' render={() => (
-            <SearchBooks
-              onSearch={this.onSearch}
-              onChangeShelf={this.onSearchChangeShelf}
-              searchBooks={this.state.searchBooks}
-            />
-          )}
-        />
+        <Switch>
+          <Route exact path='/' render={() => (
+              <ListBooks
+                books={this.state.books}
+                onChangeShelf={this.onChangeShelf}
+              />
+            )}
+          />
+          <Route path='/search' render={() => (
+              <SearchBooks
+                onSearch={this.onSearch}
+                onChangeShelf={this.onSearchChangeShelf}
+                searchBooks={this.state.searchBooks}
+              />
+            )}
+          />
+          <Route component={Page404} />
+        </Switch>
       </div>
     )
   }

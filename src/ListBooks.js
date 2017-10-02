@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Book from './Book';
+import Shelf from './Shelf';
 
 /**
  * List books in bookselfs
  */
 class ListBooks extends Component {
-  state = {
-    books: {
-      currentlyReading: {
-        tile: 'Currently Reading',
-        list: []
-      },
-      wantToRead: {
-        tile: 'Want to Read',
-        list: []
-      },
-      read: {
-        tile: 'Read',
-        list: []
-      }
-    }
-  }
-
   constructor(props) {
     super(props);
 
@@ -71,20 +54,11 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             {Object.keys(books).map((category) => (
-              <div className="bookshelf" key={category}>
-                <h2 className="bookshelf-title">{books[category].title}</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {books[category].list.map((book) => (
-                      <Book
-                        key={book.id}
-                        book={book}
-                        onChangeShelf={onChangeShelf}
-                      />
-                    ))}
-                  </ol>
-                </div>
-              </div>
+              <Shelf
+                key={category}
+                books={books}
+                category={category}
+                onChangeShelf={onChangeShelf} />
             ))}
           </div>
         </div>

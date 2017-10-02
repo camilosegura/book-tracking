@@ -8,7 +8,7 @@ const Book = ({ book, onChangeShelf }) => (
   <li>
     <div className="book">
       <div className="book-top">
-        <div className="book-cover" style={{ backgroundImage: `url(${book.imageLinks && book.imageLinks.smallThumbnail})` }}></div>
+        <div className="book-cover" style={{ backgroundImage: `url(${(book.imageLinks && book.imageLinks.thumbnail) || 'http://via.placeholder.com/128x193?text=No%20Cover'})` }}></div>
         <div className="book-shelf-changer">
           <select
             value={book.shelf}
